@@ -6,33 +6,42 @@ RSpec.describe Task, type: :model do
   describe 'validation' do
     # Taskモデル内のバリデーションに関するテストを書くグループ
     it 'is valid with all attributes' do
-        expect(build(:task)).to be_valid
+      task = build(:task)
+      expect(task).to be_valid
+      expect(task.errors).to be_empty
     end
     # タイトルがなければ無効な状態であること
     it 'is invalid without title' do
-        expect(build(:task, title: nil)).to be_invalid
-        # expect(task.errors.messages[:title]).to include("can't be blank")
+      task_without_title = build(:task, title: nil)
+      expect(task_without_title).to be_invalid
+      expect(task_without_title.errors.messages[:title]).to include("can't be blank")
     end
     it 'is invalid without status' do
         # user = FactoryBot.build(:user)
         # task = FactoryBot.build(:task, status: nil)
-        expect(build(:task, status: nil)).to be_invalid
-        # expect(task.errors.messages[:status]).to include("can't be blank")
+        task_without_status = build(:task, status: nil)
+        expect(task_without_status).to be_invalid
+        expect(task_without_status.errors.messages[:status]).to include("can't be blank")
     end
     it 'is invalid with a duplicate title' do
-      user = FactoryBot.create(:user)
-      task = FactoryBot.build(:task)
-      task.save
+      # user = FactoryBot.create(:user)
+      # task = FactoryBot.build(:task)
+      # task.save
       # task2 = FactoryBot.build(:task)
-      expect(build(:task)).to be_invalid
-      # expect(task2.errors.messages[:title]).to include('has already been taken')
+      task = create(:task)
+      task_with_duplicattion_title = build(:task, title: task.title)
+      expect(task_with_duplicattion_title).to be_invalid
+      expect(task_with_duplicattion_title.errors.messages[:title]).to include('has already been taken')
     end
     it 'is valid with another title' do
-      user = FactoryBot.create(:user)
-      task = FactoryBot.build(:task)
-      task.save
+      # user = FactoryBot.create(:user)
+      # task = FactoryBot.build(:task)
+      # task.save
       # task2 = FactoryBot.build(:task, title: 'title2')
-      expect(build(:task, title: 'title2')).to be_valid
+      task = create(:task)
+      task_with_another_title = build(:task, title: 'another_title')
+      expect(task_with_another_title).to be_valid
+      expect(task_with_another_title.errors).to be_empty
     end
   end
 end
