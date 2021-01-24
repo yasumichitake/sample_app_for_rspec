@@ -31,6 +31,16 @@ RSpec.describe "UserSessions", type: :system do
   describe 'ログイン後' do
     context 'ログアウトボタンをクリック' do
       it 'ログアウト処理が成功する' do
+        visit login_path
+        fill_in 'Email', with: 'aaa@example.com'
+        fill_in 'Password', with: '123456'
+        click_button 'Login'
+        expect(page).to have_content 'Login successful'
+        expect(current_path).to eq root_path
+
+        click_link 'Logout'
+        expect(page).to have_content 'Logged out'
+        expect(current_path).to eq root_path
       end
     end
   end
