@@ -18,7 +18,18 @@ RSpec.describe 'Users', type: :system do
         end
       end
       context 'メールアドレスが未入力' do
-        it 'ユーザーの新規作成が失敗する'
+        it 'ユーザーの新規作成が失敗する' do
+          user = build(:user, email: nil)
+          visit root_path
+          click_link 'SignUp'
+          fill_in 'Email', with: user.email
+          fill_in 'Password', with: user.password
+          fill_in 'Password confirmation', with: user.password_confirmation
+          click_button 'SignUp'
+
+          expect(page).to have_content "Email can't be blank"
+          expect(current_path).to eq users_path
+        end
       end
       context '登録済のメールアドレスを使用' do
         it 'ユーザーの新規作成が失敗する'
