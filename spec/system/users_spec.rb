@@ -4,7 +4,18 @@ RSpec.describe 'Users', type: :system do
   describe 'ログイン前' do
     describe 'ユーザー新規登録' do
       context 'フォームの入力値が正常' do
-        it 'ユーザーの新規作成が成功する'
+        it 'ユーザーの新規作成が成功する' do
+          user = build(:user)
+          visit root_path
+          click_link 'SignUp'
+          fill_in 'Email', with: user.email
+          fill_in 'Password', with: user.password
+          fill_in 'Password confirmation', with: user.password_confirmation
+          click_button 'SignUp'
+
+          expect(page).to have_content 'User was successfully created.'
+          expect(current_path).to eq login_path
+        end
       end
       context 'メールアドレスが未入力' do
         it 'ユーザーの新規作成が失敗する'
