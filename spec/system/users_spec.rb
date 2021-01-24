@@ -50,7 +50,13 @@ RSpec.describe 'Users', type: :system do
 
     describe 'マイページ' do
       context 'ログインしていない状態' do
-        it 'マイページへのアクセスが失敗する'
+        it 'マイページへのアクセスが失敗する' do
+          user = create(:user)
+          visit user_path(user.id)
+
+          expect(page).to have_content 'Login required'
+          expect(current_path).to eq login_path
+        end
       end
     end
   end
