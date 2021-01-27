@@ -62,9 +62,13 @@ RSpec.describe 'Users', type: :system do
   end
 
   describe 'ログイン後' do
+    before do
+      user = User.create!(email: 'aaa@example.com', password: '123456', password_confirmation: '123456')
+    end
     describe 'ユーザー編集' do
       context 'フォームの入力値が正常' do
-        it 'ユーザーの編集が成功する'
+        it 'ユーザーの編集が成功する' do
+        end
       end
       context 'メールアドレスが未入力' do
         it 'ユーザーの編集が失敗する'
